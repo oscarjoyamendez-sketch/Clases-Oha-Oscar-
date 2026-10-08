@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Mis Clases OHA">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Mis Clases OHA</title>
+<style>
+:root{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#111827;background:#f3f4f6}
+*{box-sizing:border-box}body{margin:0;background:#f3f4f6}
+main{max-width:620px;margin:auto;padding:18px 14px 28px}
+.header{display:flex;justify-content:space-between;align-items:end;margin:6px 2px 14px}
+h1{font-size:28px;margin:0;font-weight:900}.date{color:#6b7280;font-size:14px;margin-top:3px}
+.next{background:#111827;color:white;border-radius:22px;padding:20px;margin-bottom:14px}
+.next small{text-transform:uppercase;letter-spacing:.12em;font-weight:800;opacity:.72}
+.next h2{font-size:25px;margin:5px 0}.count{font-size:16px;font-weight:750;opacity:.9}
+.card{display:grid;grid-template-columns:8px 76px 1fr;gap:12px;align-items:center;background:white;border-radius:16px;padding:13px;margin:8px 0;box-shadow:0 1px 4px #0000000c}
+.bar{width:8px;height:48px;border-radius:9px}.school .bar{background:#62b400}.private .bar{background:#f0b400}.theme .bar{background:#1683e6}
+.time{font-weight:900;font-size:15px}.name{font-weight:800}.type{font-size:13px;color:#6b7280;margin-top:2px}
+.note{font-size:13px;color:#6b7280;text-align:center;margin:15px 4px}
+button{width:100%;border:0;border-radius:14px;padding:13px 16px;font-size:16px;font-weight:800;background:#2563eb;color:white}
+button:active{transform:scale(.99)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<main>
+  <div class="header">
+    <div><h1>Mis Clases OHA</h1><div class="date" id="date"></div></div>
+  </div>
+  <section class="next" aria-live="polite">
+    <small>Próxima clase</small>
+    <h2 id="nextTitle">16:30 · Oscar Joya</h2>
+    <div class="count" id="count">Calculando…</div>
+  </section>
+
+  <div id="classes"></div>
+  <div class="note">🟢 Escuela · 🟡 Particular · 🔵 Temática</div>
+  <button id="add">Añadir a pantalla de inicio</button>
+</main>
+
+<script>
+const classes=[
+ {start:"16:30",end:"17:30",name:"Oscar Joya",type:"Escuela",kind:"school"},
+ {start:"17:30",end:"18:30",name:"Oscar Joya",type:"Particular",kind:"private"},
+ {start:"18:30",end:"19:30",name:"Oscar Joya",type:"Escuela",kind:"school"},
+ {start:"19:30",end:"20:30",name:"Oscar Joya",type:"Escuela",kind:"school"},
+ {start:"20:30",end:"22:00",name:"Oscar Joya",type:"Escuela",kind:"school"}
+];
+const dateEl=document.getElementById("date");
+dateEl.textContent=new Intl.DateTimeFormat("es-ES",{weekday:"long",day:"numeric",month:"long"}).format(new Date());
+const list=document.getElementById("classes");
+list.innerHTML=classes.map(c=>`<article class="card ${c.kind}">
+  <div class="bar"></div><div class="time">${c.start}–${c.end}</div>
+  <div><div class="name">${c.name}</div><div class="type">${c.type}</div></div>
+</article>`).join("");
+
+function nextClass(){
+ const now=new Date(), base=new Date(now);
+ for(const c of classes){
+   const [h,m]=c.start.split(":").map(Number), [eh,em]=c.end.split(":").map(Number);
+   const s=new Date(base);s.setHours(h,m,0,0);
+   const e=new Date(base);e.setHours(eh,em,0,0);
+   if(now<e) return {c,s,e};
+ }
+ return null;
+}
+function tick(){
+ const n=nextClass(), out=document.getElementById("count"), title=document.getElementById("nextTitle");
+ if(!n){title.textContent="No quedan más clases";out.textContent="Hoy has terminado";return}
+ title.textContent=`${n.c.start} · ${n.c.name}`;
+ let ms=n.s-new Date();
+ if(ms<=0){out.textContent="Clase en curso";return}
+ const total=Math.floor(ms/1000), h=Math.floor(total/3600), m=Math.floor(total%3600/60), s=total%60;
+ out.textContent=h?`Empieza en ${h} h ${m} min`:`Empieza en ${m} min ${s} s`;
+}
+tick();setInterval(tick,1000);
+
+document.getElementById("add").addEventListener("click",()=>{
+ alert("En iPhone: pulsa Compartir en Safari → Añadir a pantalla de inicio → Añadir.");
+});
+</script>
+</body>
+</html>
