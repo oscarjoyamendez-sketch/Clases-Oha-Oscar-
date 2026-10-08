@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>Mis Clases OHA</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f5f7;color:#111827}
+main{max-width:760px;margin:auto;padding:18px}
+.hero{background:#111827;color:white;border-radius:28px;padding:24px 22px;margin-bottom:16px}
+.kicker{font-size:14px;font-weight:800;letter-spacing:3px;opacity:.75}
+.next{font-size:30px;font-weight:900;margin-top:8px}
+.nextsub{font-size:17px;opacity:.82;margin-top:4px}
+.days{display:flex;gap:8px;overflow:auto;padding-bottom:6px}
+.day{min-width:92px;border:0;border-radius:18px;padding:12px 10px;background:white;color:#111827;font-weight:800}
+.day.active{background:#b7df32}
+.day.holiday{background:#e5e7eb}
+.day small{display:block;font-weight:600;opacity:.65;margin-top:3px}
+.card{background:white;border-radius:22px;padding:18px;margin-top:12px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px #0000000b}
+.time{font-size:18px;font-weight:900;min-width:92px}
+.info{flex:1}
+.name{font-size:19px;font-weight:800}
+.type{font-size:14px;opacity:.65;margin-top:3px}
+.dot{width:14px;height:52px;border-radius:9px;background:#b7df32}
+.dot.particular{background:#ffd24d}
+.dot.tematica{background:#74c8e8}
+.holidaybox{background:#e5e7eb;border-radius:22px;padding:28px 20px;text-align:center;font-size:22px;font-weight:900}
+.holidaybox span{display:block;font-size:15px;font-weight:600;opacity:.65;margin-top:7px}
+.empty{padding:35px 10px;text-align:center;color:#6b7280}
+</style>
+</head>
+<body>
+<main>
+<section class="hero">
+  <div class="kicker">MIS CLASES OHA</div>
+  <div id="next" class="next">—</div>
+  <div id="nextsub" class="nextsub">Selecciona un día</div>
+</section>
+<div id="days" class="days"></div>
+<div id="content"></div>
+</main>
+
+<script>
+const data={
+ "2026-10-12":[],
+ "2026-10-13":[
+  ["17:30","18:30","Oscar Joya","Escuela"],
+  ["18:30","19:30","Oscar Joya","Particular"],
+  ["21:00","22:00","Oscar Joya","Escuela"]
+ ],
+ "2026-10-14":[
+  ["10:00","11:00","Oscar Joya","Escuela"],
+  ["11:00","12:00","Oscar Joya","Temática"],
+  ["14:30","15:30","Oscar Joya","Sin pagar"],
+  ["17:30","18:30","Oscar Joya","Escuela"],
+  ["18:30","19:30","Oscar Joya","Escuela"],
+  ["19:30","20:30","Oscar Joya","Escuela"],
+  ["20:30","21:30","Oscar Joya","Escuela"],
+  ["18:00","19:00","Xavier Solé Salvat","Escuela"],
+  ["19:00","20:00","Xavier Solé Salvat","Escuela"],
+  ["20:00","21:30","José Sanz","Sin pagar"]
+ ],
+ "2026-10-15":[
+  ["16:30","17:30","Oscar Joya","Escuela"],
+  ["17:30","18:30","Oscar Joya","Particular"],
+  ["18:30","19:30","Oscar Joya","Escuela"],
+  ["19:30","20:30","Oscar Joya","Escuela"],
+  ["20:30","22:00","Oscar Joya","Escuela"]
+ ],
+ "2026-10-16":[
+  ["09:00","10:00","Pista 1 Gema Mediterránea","Escuela"],
+  ["16:30","17:30","Oscar Joya","Particular"],
+  ["17:30","18:30","Oscar Joya","Escuela"],
+  ["18:30","19:30","Oscar Joya","Escuela"],
+  ["19:30","20:30","Oscar Joya","Escuela"],
+  ["20:30","22:00","Christian Peralta","Temática"]
+ ],
+ "2026-10-17":[],
+ "2026-10-18":[]
+};
+
+const days=[
+ ["2026-10-12","LUN","12 OCT","holiday"],
+ ["2026-10-13","MAR","13 OCT",""],
+ ["2026-10-14","MIÉ","14 OCT",""],
+ ["2026-10-15","JUE","15 OCT",""],
+ ["2026-10-16","VIE","16 OCT",""],
+ ["2026-10-17","SÁB","17 OCT",""],
+ ["2026-10-18","DOM","18 OCT","holiday"]
+];
+
+const dayEl=document.getElementById("days"), content=document.getElementById("content");
+let selected="2026-10-12";
+
+function render(){
+ dayEl.innerHTML="";
+ days.forEach(([d,w,label,extra])=>{
+  const b=document.createElement("button");
+  b.className="day "+(d===selected?"active ":"")+(extra==="holiday"?"holiday":"");
+  b.innerHTML=w+"<small>"+label+"</small>";
+  b.onclick=()=>{selected=d;render()};
+  dayEl.appendChild(b);
+ });
+ const list=data[selected]||[];
+ const isHoliday=selected==="2026-10-12"||selected==="2026-10-18";
+ document.getElementById("next").textContent=isHoliday?"FESTIVO":(list.length?list[0][0]+" · "+list[0][2]:"SIN CLASES");
+ document.getElementById("nextsub").textContent=isHoliday?(selected==="2026-10-12"?"Lunes 12 de octubre — Festivo Nacional":"Domingo — Festivo"):("Clases programadas");
+
+ if(isHoliday){
+   content.innerHTML='<div class="holidaybox">FESTIVO<span>'+ (selected==="2026-10-12" ? "Lunes 12 de octubre — Festivo Nacional" : "Domingo — festivo") +'</span></div>';
+   return;
+ }
+ if(!list.length){
+   content.innerHTML='<div class="empty">Sábado: el día está creado y preparado para incorporar las clases.</div>';
+   return;
+ }
+ content.innerHTML=list.sort((a,b)=>a[0].localeCompare(b[0])).map(x=>{
+   const t=(x[3]||"").toLowerCase();
+   const cls=t.includes("particular")?"particular":t.includes("temática")?"tematica":"";
+   return '<div class="card"><div class="dot '+cls+'"></div><div class="time">'+x[0]+'<br>'+x[1]+'</div><div class="info"><div class="name">'+x[2]+'</div><div class="type">'+x[3]+'</div></div></div>';
+ }).join("");
+}
+render();
+</script>
+</body>
+</html>
