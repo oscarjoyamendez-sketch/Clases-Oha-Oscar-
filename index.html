@@ -1,108 +1,112 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mis Clases OHA</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f4f5f7;color:#111827}
-main{max-width:760px;margin:auto;padding:18px}
-.hero{background:#111827;color:white;border-radius:28px;padding:24px 22px;margin-bottom:16px}
-.kicker{font-size:14px;font-weight:800;letter-spacing:3px;opacity:.75}
-.next{font-size:30px;font-weight:900;margin-top:8px}
-.nextsub{font-size:17px;opacity:.82;margin-top:4px}
-.days{display:flex;gap:8px;overflow:auto;padding-bottom:6px}
-.day{min-width:92px;border:0;border-radius:18px;padding:12px 10px;background:white;color:#111827;font-weight:800}
-.day.active{background:#b7df32}
-.day.holiday{background:#e5e7eb}
-.day small{display:block;font-weight:600;opacity:.65;margin-top:3px}
-.card{background:white;border-radius:22px;padding:18px;margin-top:12px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px #0000000b}
-.time{font-size:18px;font-weight:900;min-width:92px}
-.info{flex:1}
-.name{font-size:19px;font-weight:800}
-.type{font-size:14px;opacity:.65;margin-top:3px}
-.dot{width:14px;height:52px;border-radius:9px;background:#b7df32}
-.dot.particular{background:#ffd24d}
-.dot.tematica{background:#74c8e8}
-.holidaybox{background:#e5e7eb;border-radius:22px;padding:28px 20px;text-align:center;font-size:22px;font-weight:900}
-.holidaybox span{display:block;font-size:15px;font-weight:600;opacity:.65;margin-top:7px}
-.empty{padding:35px 10px;text-align:center;color:#6b7280}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f4f6f8;color:#17202a}
+header{background:#111;color:white;padding:22px 16px;text-align:center}
+h1{margin:0;font-size:28px}
+.sub{margin-top:6px;opacity:.8}
+.tabs{display:flex;gap:7px;overflow-x:auto;padding:12px;background:white;position:sticky;top:0;z-index:5}
+.tab{border:0;border-radius:12px;background:#e9edf1;padding:10px 13px;white-space:nowrap;font-weight:700}
+.tab.active{background:#111;color:white}
+.day{display:none;padding:16px;max-width:700px;margin:auto}
+.day.active{display:block}
+h2{margin:4px 0 14px}
+.holiday{background:#fff3cd;border:1px solid #ead28a;border-radius:14px;padding:14px;font-weight:700;margin-bottom:14px;text-align:center}
+.classbox{border-radius:14px;padding:14px;margin:10px 0;border-left:8px solid;font-weight:700;box-shadow:0 2px 7px #00000012}
+.time{font-size:18px}
+.type{margin-top:4px}
+.school{background:#e5f5e8;border-left-color:#3f9148}
+.particular{background:#fff4cf;border-left-color:#d5a400}
+.tematica{background:#dceeff;border-left-color:#2878c8}
+.legend{max-width:700px;margin:0 auto 16px;padding:0 16px}
+.legend span{display:inline-block;padding:7px 10px;border-radius:10px;margin:4px 4px 0 0;font-size:13px;font-weight:700}
+.ls{background:#e5f5e8}.lp{background:#fff4cf}.lt{background:#dceeff}
 </style>
 </head>
 <body>
-<main>
-<section class="hero">
-  <div class="kicker">MIS CLASES OHA</div>
-  <div id="next" class="next">—</div>
-  <div id="nextsub" class="nextsub">Selecciona un día</div>
+<header>
+<h1>Mis Clases OHA</h1>
+<div class="sub">Oscar Joya · Semana 8–14 octubre 2026</div>
+</header>
+
+<div class="tabs">
+<button class="tab active" onclick="showDay(0)">Jue 8</button>
+<button class="tab" onclick="showDay(1)">Vie 9</button>
+<button class="tab" onclick="showDay(2)">Sáb 10</button>
+<button class="tab" onclick="showDay(3)">Dom 11</button>
+<button class="tab" onclick="showDay(4)">Lun 12</button>
+<button class="tab" onclick="showDay(5)">Mar 13</button>
+<button class="tab" onclick="showDay(6)">Mié 14</button>
+</div>
+
+<div class="legend">
+<span class="ls">Escuela</span>
+<span class="lp">Particular</span>
+<span class="lt">Temática</span>
+</div>
+
+<section class="day active">
+<h2>Jueves 8 de octubre</h2>
+<div class="classbox school"><div class="time">16:30–17:30</div><div class="type">Escuela</div></div>
+<div class="classbox particular"><div class="time">17:30–18:30</div><div class="type">Particular</div></div>
+<div class="classbox school"><div class="time">18:30–19:30</div><div class="type">Escuela</div></div>
+<div class="classbox school"><div class="time">19:30–20:30</div><div class="type">Escuela</div></div>
+<div class="classbox school"><div class="time">20:30–22:00</div><div class="type">Escuela</div></div>
 </section>
 
-<div id="days" class="days"></div>
-<div id="content"></div>
-</main>
+<section class="day">
+<h2>Viernes 9 de octubre</h2>
+<div class="classbox school"><div class="time">18:00–19:00</div><div class="type">Escuela</div></div>
+<div class="classbox school"><div class="time">19:00–20:00</div><div class="type">Escuela</div></div>
+</section>
+
+<section class="day">
+<h2>Sábado 10 de octubre</h2>
+<div class="classbox school"><div class="time">09:00–10:00</div><div class="type">Escuela</div></div>
+<div class="classbox tematica"><div class="time">10:00–11:00</div><div class="type">Temática</div></div>
+<div class="classbox particular"><div class="time">11:00–12:00</div><div class="type">Particular</div></div>
+<div class="classbox particular"><div class="time">12:00–13:00</div><div class="type">Particular</div></div>
+</section>
+
+<section class="day">
+<h2>Domingo 11 de octubre</h2>
+<div class="holiday">FESTIVO · Sin clases</div>
+</section>
+
+<section class="day">
+<h2>Lunes 12 de octubre</h2>
+<div class="holiday">FESTIVO NACIONAL · Sin clases</div>
+</section>
+
+<section class="day">
+<h2>Martes 13 de octubre</h2>
+<div class="classbox school"><div class="time">17:30–18:30</div><div class="type">Escuela</div></div>
+<div class="classbox particular"><div class="time">18:30–19:30</div><div class="type">Particular</div></div>
+<div class="classbox school"><div class="time">21:00–22:00</div><div class="type">Escuela</div></div>
+</section>
+
+<section class="day">
+<h2>Miércoles 14 de octubre</h2>
+<div class="classbox school"><div class="time">10:00–11:00</div><div class="type">Escuela</div></div>
+<div class="classbox tematica"><div class="time">11:00–12:00</div><div class="type">Temática</div></div>
+<div class="classbox particular"><div class="time">14:30–15:30</div><div class="type">Particular</div></div>
+<div class="classbox school"><div class="time">17:30–18:30</div><div class="type">Escuela</div></div>
+<div class="classbox school"><div class="time">18:30–19:30</div><div class="type">Escuela</div></div>
+<div class="classbox school"><div class="time">19:30–20:30</div><div class="type">Escuela</div></div>
+<div class="classbox school"><div class="time">20:30–21:30</div><div class="type">Escuela</div></div>
+</section>
 
 <script>
-const data={
- "2026-10-08":[
-  ["16:30","17:30","Oscar Joya","Escuela"],
-  ["17:30","18:30","Oscar Joya","Particular"],
-  ["18:30","19:30","Oscar Joya","Escuela"],
-  ["19:30","20:30","Oscar Joya","Escuela"],
-  ["20:30","22:00","Oscar Joya","Escuela"]
- ],
- "2026-10-12":[],
- "2026-10-13":[
-  ["17:30","18:30","Oscar Joya","Escuela"],
-  ["18:30","19:30","Oscar Joya","Particular"],
-  ["21:00","22:00","Oscar Joya","Escuela"]
- ],
- "2026-10-14":[
-  ["10:00","11:00","Oscar Joya","Escuela"],
-  ["11:00","12:00","Oscar Joya","Temática"]
- ]
-};
-
-const days=[
- ["2026-10-12","LUN","12 OCT"],
- ["2026-10-13","MAR","13 OCT"],
- ["2026-10-14","MIÉ","14 OCT"]
-];
-
-const dayEl=document.getElementById("days"), content=document.getElementById("content");
-let selected="2026-10-12";
-
-function render(){
- dayEl.innerHTML="";
- days.forEach(([d,w,label])=>{
-  const b=document.createElement("button");
-  b.className="day "+(d===selected?"active ":"")+(d==="2026-10-12"?"holiday":"");
-  b.innerHTML=w+"<small>"+label+"</small>";
-  b.onclick=()=>{selected=d;render()};
-  dayEl.appendChild(b);
- });
- const list=data[selected]||[];
- const date=new Date(selected+"T12:00:00");
- const weekday=date.toLocaleDateString("es-ES",{weekday:"long"});
- document.getElementById("next").textContent =
-   selected==="2026-10-12" ? "FESTIVO NACIONAL" :
-   list.length ? list[0][0]+" · "+list[0][2] : "SIN CLASES";
- document.getElementById("nextsub").textContent =
-   selected==="2026-10-12" ? "Lunes 12 de octubre" :
-   list.length ? list[0][3] : weekday;
-
- if(selected==="2026-10-12"){
-   content.innerHTML='<div class="holidaybox">🇪🇸 FESTIVO NACIONAL<span>Lunes 12 de octubre — no hay clases</span></div>';
-   return;
- }
- if(!list.length){content.innerHTML='<div class="empty">No hay clases registradas para este día.</div>';return;}
- content.innerHTML=list.map(x=>{
-   const cls=x[3].toLowerCase().includes("particular")?"particular":x[3].toLowerCase().includes("temática")?"tematica":"";
-   return `<div class="card"><div class="dot ${cls}"></div><div class="time">${x[0]}<br>${x[1]}</div><div class="info"><div class="name">${x[2]}</div><div class="type">${x[3]}</div></div></div>`;
- }).join("");
+function showDay(i){
+  document.querySelectorAll('.day').forEach((d,n)=>d.classList.toggle('active',n===i));
+  document.querySelectorAll('.tab').forEach((b,n)=>b.classList.toggle('active',n===i));
+  window.scrollTo({top:0,behavior:'smooth'});
 }
-render();
 </script>
 </body>
 </html>
