@@ -3,59 +3,86 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#3f66e8">
-<link rel="manifest" href="manifest.webmanifest">
-<title>Mis Clases OHA</title>
+<meta name="theme-color" content="#101827">
+<title>Clases OHA - Oscar</title>
 <style>
-:root{--bg:#f4f5f7;--ink:#111a2b;--muted:#707888;--blue:#3f66e8;--green:#69be2a;--yellow:#efb82a;--theme:#2d73cf}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-main{max-width:760px;margin:auto;padding:28px 18px 38px}
-h1{font-size:42px;line-height:1.05;margin:0 0 6px;font-weight:850}.sub{font-size:20px;color:var(--muted);font-weight:700;margin-bottom:20px}
-.hero{background:#111a2b;color:white;border-radius:30px;padding:25px 24px;margin-bottom:20px}
-.hero small{letter-spacing:3px;font-weight:850;color:#cdd2dc}.hero .time{font-size:36px;font-weight:850;margin-top:10px}.hero .count{font-size:22px;font-weight:750;margin-top:5px}
-.days{display:flex;gap:9px;overflow:auto;padding:3px 0 15px}.day{border:0;border-radius:16px;background:white;padding:11px 15px;font-weight:800;color:#5f6878;white-space:nowrap}.day.active{background:var(--blue);color:white}
-.card{background:white;border-radius:24px;padding:18px 17px;margin:12px 0;display:flex;align-items:center;gap:15px;box-shadow:0 5px 16px rgba(20,30,50,.06)}
-.stripe{width:11px;height:92px;border-radius:10px;flex:0 0 11px}.school{background:var(--green)}.private{background:var(--yellow)}.theme{background:var(--theme)}
-.timebox{width:105px;font-size:23px;font-weight:850;line-height:1.1}.name{font-size:24px;font-weight:850}.kind{font-size:18px;color:var(--muted);font-weight:700;margin-top:4px}
-.legend{text-align:center;color:var(--muted);font-weight:750;margin:22px 0 15px;font-size:16px}.dot{display:inline-block;width:16px;height:16px;border-radius:50%;vertical-align:-2px;margin:0 5px 0 12px}.dot:first-child{margin-left:0}
-.install{display:block;width:100%;border:0;background:var(--blue);color:white;border-radius:22px;padding:18px;font-size:20px;font-weight:850}
-.note{text-align:center;color:#8a91a0;font-size:13px;margin-top:15px}
+*{box-sizing:border-box} body{margin:0;background:#f4f5f7;color:#111827;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:900px;margin:auto;padding:18px 16px 40px}
+.hero{background:#111827;color:white;border-radius:30px;padding:26px 24px;margin-bottom:18px}
+.kicker{font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;opacity:.8}
+.next{font-size:42px;font-weight:900;line-height:1.05;margin:8px 0}
+.sub{font-size:19px;font-weight:700;opacity:.9}
+.days{display:flex;gap:10px;overflow:auto;padding:4px 0 16px}
+.days button{border:0;border-radius:24px;padding:13px 20px;background:white;font-weight:800;font-size:16px;white-space:nowrap}
+.days button.active{background:#4d69df;color:white}
+.card{background:white;border-radius:26px;padding:20px 18px;margin:12px 0;display:flex;gap:18px;align-items:center;box-shadow:0 5px 20px rgba(17,24,39,.06)}
+.bar{width:10px;align-self:stretch;border-radius:8px;min-height:74px}
+.time{font-size:26px;font-weight:900;min-width:120px}.name{font-size:23px;font-weight:900}.type{font-size:18px;font-weight:800;color:#737b8c;margin-top:4px}
+.green{background:#7bc43c}.yellow{background:#f0bd3e}.blue{background:#8fd8e8}
+.empty{background:white;border-radius:26px;padding:28px;text-align:center;font-weight:700;color:#777}
+@media(max-width:520px){.next{font-size:34px}.time{min-width:105px;font-size:22px}.name{font-size:20px}.type{font-size:16px}}
 </style>
 </head>
 <body>
-<main>
-<h1>Mis Clases OHA</h1>
-<div class="sub" id="weekTitle">Semana · 8–10 de octubre</div>
-<div class="hero"><small>PRÓXIMA CLASE</small><div class="time" id="nextClass">16:30 · Oscar Joya</div><div class="count" id="countdown">Consulta el día seleccionado</div></div>
-<div class="days" id="days"></div>
-<section id="list"></section>
-<div class="legend"><span class="dot school"></span>Escuela · <span class="dot private"></span>Particular · <span class="dot theme"></span>Temática</div>
-<button class="install" onclick="alert('En iPhone: pulsa Compartir en Safari → Añadir a pantalla de inicio → Añadir.')">Añadir a pantalla de inicio</button>
-<div class="note">Panel OHA · solo clases de Oscar Joya · sin estado de pago</div>
-</main>
+<div class="wrap">
+  <section class="hero">
+    <div class="kicker">Próxima clase</div>
+    <div id="next" class="next">—</div>
+    <div id="nextSub" class="sub">—</div>
+  </section>
+  <div id="days" class="days"></div>
+  <main id="list"></main>
+</div>
 <script>
-const data={
-"2026-10-08":[
-["16:30","17:30","Escuela","school"],["17:30","18:30","Particular","private"],
-["18:30","19:30","Escuela","school"],["19:30","20:30","Escuela","school"],
-["20:30","22:00","Escuela","school"]],
-"2026-10-09":[
-["09:00","10:00","Particular","private"],["18:00","19:00","Escuela","school"],
-["19:00","20:00","Escuela","school"]],
-"2026-10-10":[
-["09:00","10:00","Escuela","school"],["10:00","11:00","Temática","theme"],
-["11:00","12:00","Particular","private"],["12:00","13:00","Particular","private"]]
-};
-const labels={"2026-10-08":"Jue 8","2026-10-09":"Vie 9","2026-10-10":"Sáb 10"};
-let selected="2026-10-08";
-const days=document.getElementById("days"), list=document.getElementById("list"), next=document.getElementById("nextClass"), count=document.getElementById("countdown");
-Object.keys(data).forEach(k=>{let b=document.createElement("button");b.className="day";b.textContent=labels[k];b.onclick=()=>show(k);b.dataset.day=k;days.appendChild(b)});
-function show(k){
- selected=k; document.querySelectorAll(".day").forEach(b=>b.classList.toggle("active",b.dataset.day===k));
- list.innerHTML="";
- data[k].forEach(c=>{let [a,b,kind,cls]=c;let el=document.createElement("div");el.className="card";el.innerHTML=`<div class="stripe ${cls}"></div><div class="timebox">${a}–<br>${b}</div><div><div class="name">Oscar Joya</div><div class="kind">${kind}</div></div>`;list.appendChild(el)});
- let first=data[k][0]; next.textContent=first[0]+" · Oscar Joya"; count.textContent="Clase del día seleccionado";
+const days=[
+ {key:"2026-10-08",label:"Jue 8",classes:[
+  ["16:30","17:30","Oscar Joya","Escuela","green"],
+  ["17:30","18:30","Oscar Joya","Particular","yellow"],
+  ["18:30","19:30","Oscar Joya","Escuela","green"],
+  ["19:30","20:30","Oscar Joya","Escuela","green"],
+  ["20:30","22:00","Oscar Joya","Escuela","green"]
+ ]},
+ {key:"2026-10-09",label:"Vie 9",classes:[
+  ["09:00","10:00","Oscar Joya","Particular","yellow"],
+  ["18:00","19:00","Oscar Joya","Escuela","green"],
+  ["19:00","20:00","Oscar Joya","Escuela","green"]
+ ]},
+ {key:"2026-10-10",label:"Sáb 10",classes:[
+  ["09:00","10:00","Oscar Joya","Escuela","green"],
+  ["10:00","11:00","Oscar Joya","Temática","blue"],
+  ["11:00","12:00","Oscar Joya","Particular","yellow"],
+  ["12:00","13:00","Oscar Joya","Particular","yellow"]
+ ]}
+];
+
+let selected=0;
+function renderDays(){
+ document.getElementById("days").innerHTML=days.map((d,i)=>
+  `<button class="${i===selected?'active':''}" onclick="selectDay(${i})">${d.label}</button>`).join("");
 }
-show(selected);
+function render(){
+ const d=days[selected];
+ const now=new Date();
+ const today=now.toISOString().slice(0,10);
+ let upcoming=d.classes[0];
+ if(d.key===today){
+   upcoming=d.classes.find(c=>{
+     const [h,m]=c[0].split(":").map(Number);
+     return h*60+m >= now.getHours()*60+now.getMinutes();
+   }) || d.classes[d.classes.length-1];
+ }
+ document.getElementById("next").textContent=`${upcoming[0]} · ${upcoming[2]}`;
+ document.getElementById("nextSub").textContent=`${d.label} · ${upcoming[3]}`;
+ document.getElementById("list").innerHTML=d.classes.map(c=>`
+  <article class="card">
+   <div class="bar ${c[4]}"></div>
+   <div class="time">${c[0]}–${c[1]}</div>
+   <div><div class="name">${c[2]}</div><div class="type">${c[3]}</div></div>
+  </article>`).join("");
+ renderDays();
+}
+function selectDay(i){selected=i;render()}
+render();
 </script>
-</body></html>
+</body>
+</html>
